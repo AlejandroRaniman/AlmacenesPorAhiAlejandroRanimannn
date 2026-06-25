@@ -8,9 +8,9 @@
 
     <ScrollView>
         <VerticalStackLayout Spacing="20" Padding="30" VerticalOptions="Center">
-            
+
             <Image Source="almacenapp_logo.svg" HeightRequest="120" HorizontalOptions="Center" Margin="0,0,0,20"/>
-            
+
             <Label Text="Sistema de Administración" 
                    FontSize="24" 
                    FontAttributes="Bold" 

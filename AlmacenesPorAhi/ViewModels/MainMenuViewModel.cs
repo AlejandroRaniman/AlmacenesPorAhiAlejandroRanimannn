@@ -15,6 +15,7 @@ public partial class MainMenuViewModel : ObservableObject
     [RelayCommand]
     private async Task IrAClientesAsync()
     {
+        // Navega de forma fluida hacia la interfaz del listado de clientes
         await Shell.Current.GoToAsync(nameof(ClienteListPage));
     }
 }
