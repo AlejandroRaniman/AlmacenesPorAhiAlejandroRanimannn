@@ -2,26 +2,60 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:AlmacenesPorAhi.ViewModels"
+             xmlns:models="clr-namespace:AlmacenesPorAhi.Models"
              x:Class="AlmacenesPorAhi.Views.ClienteListPage"
-             Title="Gestión de Clientes">
+             Title="Listado de Clientes"
+             BackgroundColor="#F9FBF9">
 
     <Grid RowDefinitions="Auto, *">
-        <Button Grid.Row="0" Text="Nuevo Cliente" Command="{Binding GoToCreateCommand}" Margin="10" BackgroundColor="#2D4236" TextColor="White"/>
 
-        <CollectionView Grid.Row="1" ItemsSource="{Binding Clientes}" Margin="10">
+        <Button Grid.Row="0" 
+                Text="Registrar Nuevo Cliente" 
+                Command="{Binding GoToCreateCommand}" 
+                Margin="15" 
+                BackgroundColor="#2D4236" 
+                TextColor="White"
+                FontAttributes="Bold"
+                CornerRadius="6"/>
+
+        <CollectionView Grid.Row="1" 
+                        ItemsSource="{Binding Clientes}" 
+                        Margin="15,0,15,15">
+            <CollectionView.EmptyView>
+                <Label Text="No hay clientes registrados en el sistema." 
+                       HorizontalOptions="Center" 
+                       VerticalOptions="Center" 
+                       TextColor="Gray"/>
+            </CollectionView.EmptyView>
             <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Frame Margin="0,5" Padding="10" BorderColor="LightGray">
+                <DataTemplate x:DataType="models:Cliente">
+                    <Frame Margin="0,6" Padding="12" BorderColor="#E0E0E0" CornerRadius="8" BackgroundColor="White">
                         <Grid ColumnDefinitions="*, Auto">
-                            <VerticalStackLayout Grid.Column="0">
-                                <Label Text="{Binding Rut}" FontAttributes="Bold" />
-                                <Label Text="{Binding Nombre, StringFormat='{0} {Binding ApellidoPaterno}'}" />
-                                <Label Text="{Binding Estado}" TextColor="Gray" FontSize="12"/>
+                            <VerticalStackLayout Grid.Column="0" Spacing="3">
+                                <HorizontalStackLayout Spacing="5">
+                                    <Label Text="{Binding Nombre}" FontAttributes="Bold" FontSize="16" TextColor="#2D4236"/>
+                                    <Label Text="{Binding ApellidoPaterno}" FontAttributes="Bold" FontSize="16" TextColor="#2D4236"/>
+                                </HorizontalStackLayout>
+                                <Label Text="{Binding Rut, StringFormat='RUT: {0}'}" FontSize="13" TextColor="DimGray"/>
+                                <Label Text="{Binding Email}" FontSize="13" TextColor="DimGray"/>
+                                <Label Text="{Binding Estado}" FontSize="12" FontAttributes="Italic" TextColor="#4A6B56"/>
                             </VerticalStackLayout>
 
-                            <HorizontalStackLayout Grid.Column="1" Spacing="10" VerticalOptions="Center">
-                                <Button Text="Editar" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ClienteListViewModel}}, Path=GoToEditCommand}" CommandParameter="{Binding .}" BackgroundColor="RoyalBlue" TextColor="White" HeightRequest="35"/>
-                                <Button Text="Eliminar" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ClienteListViewModel}}, Path=DeleteCommand}" CommandParameter="{Binding .}" BackgroundColor="Red" TextColor="White" HeightRequest="35"/>
+                            <HorizontalStackLayout Grid.Column="1" Spacing="8" VerticalOptions="Center">
+                                <Button Text="Editar" 
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ClienteListViewModel}}, Path=GoToEditCommand}" 
+                                        CommandParameter="{Binding .}" 
+                                        BackgroundColor="#4A90E2" 
+                                        TextColor="White" 
+                                        HeightRequest="38"
+                                        CornerRadius="4"/>
+                                <Button Text="Eliminar" 
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ClienteListViewModel}}, Path=DeleteCommand}" 
+                                        CommandParameter="{Binding .}" 
+                                        BackgroundColor="#D9534F" 
+                                        TextColor="White" 
+                                        HeightRequest="38"
+                                        CornerRadius="4"/>
                             </HorizontalStackLayout>
                         </Grid>
                     </Frame>

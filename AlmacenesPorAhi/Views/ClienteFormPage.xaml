@@ -2,32 +2,36 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AlmacenesPorAhi.Views.ClienteFormPage"
-             Title="Formulario de Cliente">
+             Title="Formulario de Cliente"
+             BackgroundColor="White">
 
     <ScrollView>
-        <VerticalStackLayout Spacing="15" Margin="20">
-            <Label Text="RUT" FontAttributes="Bold" />
-            <Entry Text="{Binding Rut}" Placeholder="11.111.111-1" />
+        <VerticalStackLayout Spacing="14" Padding="20">
 
-            <Label Text="Nombre" FontAttributes="Bold" />
-            <Entry Text="{Binding Nombre}" Placeholder="Ej: Juan" />
+            <Label Text="Información del Cliente" FontSize="20" FontAttributes="Bold" TextColor="#2D4236" Margin="0,0,0,10"/>
 
-            <Label Text="Apellido Paterno" FontAttributes="Bold" />
-            <Entry Text="{Binding ApellidoPaterno}" Placeholder="Ej: Pérez" />
+            <Label Text="RUT *" FontAttributes="Bold" FontSize="14"/>
+            <Entry Text="{Binding Rut}" Placeholder="Ej: 12.345.678-9"/>
 
-            <Label Text="Apellido Materno" FontAttributes="Bold" />
-            <Entry Text="{Binding ApellidoMaterno}" Placeholder="Ej: González" />
+            <Label Text="Nombre *" FontAttributes="Bold" FontSize="14"/>
+            <Entry Text="{Binding Nombre}" Placeholder="Nombre del cliente"/>
 
-            <Label Text="Email" FontAttributes="Bold" />
-            <Entry Text="{Binding Email}" Keyboard="Email" Placeholder="correo@ejemplo.com" />
+            <Label Text="Apellido Paterno *" FontAttributes="Bold" FontSize="14"/>
+            <Entry Text="{Binding ApellidoPaterno}" Placeholder="Apellido paterno"/>
 
-            <Label Text="Teléfono" FontAttributes="Bold" />
-            <Entry Text="{Binding Telefono}" Keyboard="Telephone" Placeholder="+56912345678" />
+            <Label Text="Apellido Materno *" FontAttributes="Bold" FontSize="14"/>
+            <Entry Text="{Binding ApellidoMaterno}" Placeholder="Apellido materno"/>
 
-            <Label Text="Dirección" FontAttributes="Bold" />
-            <Editor Text="{Binding Direccion}" Placeholder="Ingrese la dirección completa" HeightRequest="80" />
+            <Label Text="Correo Electrónico *" FontAttributes="Bold" FontSize="14"/>
+            <Entry Text="{Binding Email}" Keyboard="Email" Placeholder="ejemplo@correo.com"/>
 
-            <Label Text="Estado" FontAttributes="Bold" />
+            <Label Text="Teléfono Móvil *" FontAttributes="Bold" FontSize="14"/>
+            <Entry Text="{Binding Telefono}" Keyboard="Telephone" Placeholder="Ej: +56912345678"/>
+
+            <Label Text="Dirección Particular *" FontAttributes="Bold" FontSize="14"/>
+            <Editor Text="{Binding Direccion}" Placeholder="Calle, Número, Ciudad" AutoSize="TextChanges" HeightRequest="70"/>
+
+            <Label Text="Estado de Cuenta *" FontAttributes="Bold" FontSize="14"/>
             <Picker SelectedItem="{Binding Estado}">
                 <Picker.ItemsSource>
                     <x:Array Type="{x:Type x:String}">
@@ -37,10 +41,11 @@
                 </Picker.ItemsSource>
             </Picker>
 
-            <HorizontalStackLayout Spacing="20" HorizontalOptions="Center" Margin="0,20,0,0">
-                <Button Text="Guardar" Command="{Binding SaveCommand}" BackgroundColor="#2D4236" TextColor="White" WidthRequest="120" />
-                <Button Text="Cancelar" Command="{Binding CancelCommand}" BackgroundColor="Gray" TextColor="White" WidthRequest="120" />
-            </HorizontalStackLayout>
+            <Grid ColumnDefinitions="*, *" ColumnSpacing="15" Margin="0,20,0,0">
+                <Button Grid.Column="0" Text="Guardar" Command="{Binding SaveCommand}" BackgroundColor="#2D4236" TextColor="White" FontAttributes="Bold" HeightRequest="48"/>
+                <Button Grid.Column="1" Text="Cancelar" Command="{Binding CancelCommand}" BackgroundColor="#7F8C8D" TextColor="White" FontAttributes="Bold" HeightRequest="48"/>
+            </Grid>
+
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

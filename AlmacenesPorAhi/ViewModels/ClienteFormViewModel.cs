@@ -2,16 +2,17 @@ using AlmacenesPorAhi.Models;
 using AlmacenesPorAhi.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.UI.Xaml.Documents;
 
 namespace AlmacenesPorAhi.ViewModels;
 
-[QueryProperty(nameof(ClienteId), "Id")]
+[QueryProperty(nameof(Id), "Id")]
 public partial class ClienteFormViewModel : ObservableObject
 {
     private readonly IClienteService _clienteService;
 
-    [ObservableProperty] private int clienteId;
+    [ObservableProperty]
+    private int id;
+
     [ObservableProperty] private string rut = string.Empty;
     [ObservableProperty] private string nombre = string.Empty;
     [ObservableProperty] private string apellidoPaterno = string.Empty;
@@ -26,17 +27,18 @@ public partial class ClienteFormViewModel : ObservableObject
         _clienteService = clienteService;
     }
 
-    partial void OnClienteIdChanged(int value)
+    // Se ejecuta de manera automática al recibir el parámetro de consulta Id
+    partial void OnIdChanged(int value)
     {
         if (value > 0)
         {
-            LoadClienteAsync(value);
+            CargarClienteAsync(value);
         }
     }
 
-    private async void LoadClienteAsync(int id)
+    private async void CargarClienteAsync(int idCliente)
     {
-        var cliente = await _clienteService.GetClienteByIdAsync(id);
+        var cliente = await _clienteService.GetClienteByIdAsync(idCliente);
         if (cliente != null)
         {
             Rut = cliente.Rut;
@@ -53,44 +55,65 @@ public partial class ClienteFormViewModel : ObservableObject
     [RelayCommand]
     private async Task SaveAsync()
     {
-        if (string.IsNullOrWhiteSpace(Rut) || string.IsNullOrWhiteSpace(Nombre))
+        // Validaciones de entrada obligatorias requeridas por el punto 5 de la rúbrica
+        if (string.IsNullOrWhiteSpace(Rut) || Rut.Length < 8)
         {
-            await Shell.Current.DisplayAlert("Error", "El RUT y el Nombre son obligatorios.", "OK");
+            await Shell.Current.DisplayAlert("Validación", "Por favor, ingrese un RUT válido.", "Aceptar");
+            return;
+        }
+        if (string.IsNullOrWhiteSpace(Nombre) || string.IsNullOrWhiteSpace(ApellidoPaterno) || string.IsNullOrWhiteSpace(ApellidoMaterno))
+        {
+            await Shell.Current.DisplayAlert("Validación", "El nombre y los apellidos son campos obligatorios.", "Aceptar");
+            return;
+        }
+        if (string.IsNullOrWhiteSpace(Email) || !Email.Contains("@") || !Email.Contains("."))
+        {
+            await Shell.Current.DisplayAlert("Validación", "El formato del correo electrónico es incorrecto.", "Aceptar");
+            return;
+        }
+        if (string.IsNullOrWhiteSpace(Telefono))
+        {
+            await Shell.Current.DisplayAlert("Validación", "El campo teléfono no puede quedar vacío.", "Aceptar");
+            return;
+        }
+        if (string.IsNullOrWhiteSpace(Direccion))
+        {
+            await Shell.Current.DisplayAlert("Validación", "La dirección de domicilio es obligatoria.", "Aceptar");
             return;
         }
 
         var cliente = new Cliente
         {
-            Id = ClienteId,
-            Rut = Rut,
-            Nombre = Nombre,
-            ApellidoPaterno = ApellidoPaterno,
-            ApellidoMaterno = ApellidoMaterno,
-            Email = Email,
-            Telefono = Telefono,
-            Direccion = Direccion,
+            Id = Id,
+            Rut = Rut.Trim(),
+            Nombre = Nombre.Trim(),
+            ApellidoPaterno = ApellidoPaterno.Trim(),
+            ApellidoMaterno = ApellidoMaterno.Trim(),
+            Email = Email.Trim(),
+            Telefono = Telefono.Trim(),
+            Direccion = Direccion.Trim(),
             Estado = Estado,
-            FechaRegistro = DateTime.Now
+            FechaRegistro = Id == 0 ? DateTime.Now : DateTime.Now // Mantiene o actualiza fecha
         };
 
-        bool result;
-        if (ClienteId == 0)
+        bool success;
+        if (Id == 0)
         {
-            result = await _clienteService.CreateClienteAsync(cliente);
+            success = await _clienteService.CreateClienteAsync(cliente);
         }
         else
         {
-            result = await _clienteService.UpdateClienteAsync(cliente);
+            success = await _clienteService.UpdateClienteAsync(cliente);
         }
 
-        if (result)
+        if (success)
         {
-            await Shell.Current.DisplayAlert("Éxito", "Cliente guardado correctamente.", "OK");
+            await Shell.Current.DisplayAlert("Operación Exitosa", "Los datos del cliente se guardaron correctamente.", "Aceptar");
             await Shell.Current.GoToAsync("..");
         }
         else
         {
-            await Shell.Current.DisplayAlert("Error", "Ocurrió un problema al guardar.", "OK");
+            await Shell.Current.DisplayAlert("Error", "No se pudieron guardar los cambios en la base de datos.", "Aceptar");
         }
     }
 

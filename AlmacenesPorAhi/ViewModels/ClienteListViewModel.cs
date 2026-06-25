@@ -24,9 +24,9 @@ public partial class ClienteListViewModel : ObservableObject
     {
         var lista = await _clienteService.GetClientesAsync();
         Clientes.Clear();
-        foreach (var c in lista)
+        foreach (var cliente in lista)
         {
-            Clientes.Add(c);
+            Clientes.Add(cliente);
         }
     }
 
@@ -40,6 +40,7 @@ public partial class ClienteListViewModel : ObservableObject
     private async Task GoToEditAsync(Cliente cliente)
     {
         if (cliente == null) return;
+        // Pasa el ID como parámetro de consulta
         await Shell.Current.GoToAsync($"{nameof(ClienteFormPage)}?Id={cliente.Id}");
     }
 
@@ -48,11 +49,20 @@ public partial class ClienteListViewModel : ObservableObject
     {
         if (cliente == null) return;
 
-        bool confirm = await Shell.Current.DisplayAlert("Confirmar", $"¿Desea eliminar a {cliente.Nombre} {cliente.ApellidoPaterno}?", "Sí", "No");
+        bool confirm = await Shell.Current.DisplayAlert("Confirmar Eliminación",
+            $"¿Está seguro de eliminar al cliente {cliente.Nombre} {cliente.ApellidoPaterno}?", "Eliminar", "Cancelar");
+
         if (confirm)
         {
-            await _clienteService.DeleteClienteAsync(cliente.Id);
-            await LoadClientesAsync();
+            bool success = await _clienteService.DeleteClienteAsync(cliente.Id);
+            if (success)
+            {
+                await LoadClientesAsync();
+            }
+            else
+            {
+                await Shell.Current.DisplayAlert("Error", "No se pudo eliminar el registro.", "OK");
+            }
         }
     }
 }

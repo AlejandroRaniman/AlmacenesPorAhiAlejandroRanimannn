@@ -9,12 +9,12 @@ public partial class MainMenuViewModel : ObservableObject
     [RelayCommand]
     private async Task IrAInventarioAsync()
     {
-        await Shell.Current!.GoToAsync(nameof(ProductoListPage));
+        await Shell.Current.GoToAsync(nameof(ProductoListPage));
     }
 
     [RelayCommand]
     private async Task IrAClientesAsync()
     {
-        await Shell.Current!.GoToAsync(nameof(ClienteListPage));
+        await Shell.Current.GoToAsync(nameof(ClienteListPage));
     }
 }

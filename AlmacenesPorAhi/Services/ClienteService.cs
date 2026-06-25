@@ -11,11 +11,13 @@ public class ClienteService : IClienteService
     public ClienteService(AppDbContext context)
     {
         _context = context;
+        // Asegura que la base de datos y tablas estén creadas de forma local
+        _context.Database.EnsureCreated();
     }
 
     public async Task<List<Cliente>> GetClientesAsync()
     {
-        return await _context.Clientes.ToListAsync();
+        return await _context.Clientes.AsNoTracking().ToListAsync();
     }
 
     public async Task<Cliente?> GetClienteByIdAsync(int id)
@@ -28,8 +30,7 @@ public class ClienteService : IClienteService
         try
         {
             await _context.Clientes.AddAsync(cliente);
-            await _context.SaveChangesAsync();
-            return true;
+            return await _context.SaveChangesAsync() > 0;
         }
         catch
         {
@@ -42,8 +43,7 @@ public class ClienteService : IClienteService
         try
         {
             _context.Clientes.Update(cliente);
-            await _context.SaveChangesAsync();
-            return true;
+            return await _context.SaveChangesAsync() > 0;
         }
         catch
         {
@@ -55,12 +55,11 @@ public class ClienteService : IClienteService
     {
         try
         {
-            var cliente = await GetClienteByIdAsync(id);
+            var cliente = await _context.Clientes.FindAsync(id);
             if (cliente == null) return false;
 
             _context.Clientes.Remove(cliente);
-            await _context.SaveChangesAsync();
-            return true;
+            return await _context.SaveChangesAsync() > 0;
         }
         catch
         {
