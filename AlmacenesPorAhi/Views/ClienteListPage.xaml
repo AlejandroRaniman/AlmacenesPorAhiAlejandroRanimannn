@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:AlmacenesPorAhi.ViewModels"
+             x:Class="AlmacenesPorAhi.Views.ClienteListPage"
+             Title="Gestión de Clientes">
+
+    <Grid RowDefinitions="Auto, *">
+        <Button Grid.Row="0" Text="Nuevo Cliente" Command="{Binding GoToCreateCommand}" Margin="10" BackgroundColor="#2D4236" TextColor="White"/>
+
+        <CollectionView Grid.Row="1" ItemsSource="{Binding Clientes}" Margin="10">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Margin="0,5" Padding="10" BorderColor="LightGray">
+                        <Grid ColumnDefinitions="*, Auto">
+                            <VerticalStackLayout Grid.Column="0">
+                                <Label Text="{Binding Rut}" FontAttributes="Bold" />
+                                <Label Text="{Binding Nombre, StringFormat='{0} {Binding ApellidoPaterno}'}" />
+                                <Label Text="{Binding Estado}" TextColor="Gray" FontSize="12"/>
+                            </VerticalStackLayout>
+
+                            <HorizontalStackLayout Grid.Column="1" Spacing="10" VerticalOptions="Center">
+                                <Button Text="Editar" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ClienteListViewModel}}, Path=GoToEditCommand}" CommandParameter="{Binding .}" BackgroundColor="RoyalBlue" TextColor="White" HeightRequest="35"/>
+                                <Button Text="Eliminar" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ClienteListViewModel}}, Path=DeleteCommand}" CommandParameter="{Binding .}" BackgroundColor="Red" TextColor="White" HeightRequest="35"/>
+                            </HorizontalStackLayout>
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AlmacenesPorAhi.Views.ClienteFormPage"
+             Title="Formulario de Cliente">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="15" Margin="20">
+            <Label Text="RUT" FontAttributes="Bold" />
+            <Entry Text="{Binding Rut}" Placeholder="11.111.111-1" />
+
+            <Label Text="Nombre" FontAttributes="Bold" />
+            <Entry Text="{Binding Nombre}" Placeholder="Ej: Juan" />
+
+            <Label Text="Apellido Paterno" FontAttributes="Bold" />
+            <Entry Text="{Binding ApellidoPaterno}" Placeholder="Ej: Pérez" />
+
+            <Label Text="Apellido Materno" FontAttributes="Bold" />
+            <Entry Text="{Binding ApellidoMaterno}" Placeholder="Ej: González" />
+
+            <Label Text="Email" FontAttributes="Bold" />
+            <Entry Text="{Binding Email}" Keyboard="Email" Placeholder="correo@ejemplo.com" />
+
+            <Label Text="Teléfono" FontAttributes="Bold" />
+            <Entry Text="{Binding Telefono}" Keyboard="Telephone" Placeholder="+56912345678" />
+
+            <Label Text="Dirección" FontAttributes="Bold" />
+            <Editor Text="{Binding Direccion}" Placeholder="Ingrese la dirección completa" HeightRequest="80" />
+
+            <Label Text="Estado" FontAttributes="Bold" />
+            <Picker SelectedItem="{Binding Estado}">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>Activo</x:String>
+                        <x:String>Inactivo</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+
+            <HorizontalStackLayout Spacing="20" HorizontalOptions="Center" Margin="0,20,0,0">
+                <Button Text="Guardar" Command="{Binding SaveCommand}" BackgroundColor="#2D4236" TextColor="White" WidthRequest="120" />
+                <Button Text="Cancelar" Command="{Binding CancelCommand}" BackgroundColor="Gray" TextColor="White" WidthRequest="120" />
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
